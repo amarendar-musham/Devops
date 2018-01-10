@@ -19,7 +19,29 @@ update-rc.d kibana defaults 96 9 && service kibana start
 apt-get -y install nginx apache2-utils 
 
 echo ; echo ; echo 'set password for user """ amar """'; echo 
-htpasswd -c /etc/nginx/htpasswd.users amar && service nginx restart
+htpasswd -c /etc/nginx/htpasswd.users amar 
+## nginx file
+> /etc/nginx/sites-available/default
+echo 'server {' >> /etc/nginx/sites-available/default
+echo '    listen 80;' >> /etc/nginx/sites-available/default
+echo '' >> /etc/nginx/sites-available/default
+echo '    server_name example.com;' >> /etc/nginx/sites-available/default
+echo '' >> /etc/nginx/sites-available/default
+echo '    auth_basic "Restricted Access";' >> /etc/nginx/sites-available/default
+echo '    auth_basic_user_file /etc/nginx/htpasswd.users;' >> /etc/nginx/sites-available/default
+echo '' >> /etc/nginx/sites-available/default
+echo '    location / {' >> /etc/nginx/sites-available/default
+echo '        proxy_pass http://localhost:5601;' >> /etc/nginx/sites-available/default
+echo '        proxy_http_version 1.1;' >> /etc/nginx/sites-available/default
+echo '        proxy_set_header Upgrade $http_upgrade;' >> /etc/nginx/sites-available/default
+echo '        proxy_set_header Connection 'upgrade';' >> /etc/nginx/sites-available/default
+echo '        proxy_set_header Host $host;' >> /etc/nginx/sites-available/default
+echo '        proxy_cache_bypass $http_upgrade;        ' >> /etc/nginx/sites-available/default
+echo '    }' >> /etc/nginx/sites-available/default
+echo '}' >> /etc/nginx/sites-available/default
+
+############
+service nginx restart
 
 echo 'deb http://packages.elastic.co/logstash/2.2/debian stable main' | sudo tee /etc/apt/sources.list.d/logstash-2.2.x.list && apt-get update && apt-get install -y logstash 
 mkdir -p /etc/pki/tls/certs && mkdir /etc/pki/tls/private
