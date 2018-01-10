@@ -43,11 +43,11 @@ echo "} " >> /etc/logstash/conf.d/02-beats-input.conf
 
 > /etc/logstash/conf.d/10-syslog-filter.conf
 echo "filter {" >> /etc/logstash/conf.d/10-syslog-filter.conf
-echo " if [type] == "syslog" {" >> /etc/logstash/conf.d/10-syslog-filter.conf
+echo ' if [type] == "syslog" {' >> /etc/logstash/conf.d/10-syslog-filter.conf
 echo "   grok {" >> /etc/logstash/conf.d/10-syslog-filter.conf
-echo "     match => { "message" => "%{SYSLOGTIMESTAMP:syslog_timestamp} %{SYSLOGHOST:syslog_hostname} %{DATA:syslog_program}(?:\[%{POSINT:syslog_pid}\])?: %{GREEDYDATA:syslog_message}" }" >> /etc/logstash/conf.d/10-syslog-filter.conf
-echo "     add_field => [ "received_at", "%{@timestamp}" ]" >> /etc/logstash/conf.d/10-syslog-filter.conf
-echo "     add_field => [ "received_from", "%{host}" ]" >> /etc/logstash/conf.d/10-syslog-filter.conf
+echo '     match => { "message" => "%{SYSLOGTIMESTAMP:syslog_timestamp} %{SYSLOGHOST:syslog_hostname} %{DATA:syslog_program}(?:\[%{POSINT:syslog_pid}\])?: %{GREEDYDATA:syslog_message}" }' >> /etc/logstash/conf.d/10-syslog-filter.conf
+echo '     add_field => [ "received_at", "%{@timestamp}" ]' >> /etc/logstash/conf.d/10-syslog-filter.conf
+echo '     add_field => [ "received_from", "%{host}" ]' >> /etc/logstash/conf.d/10-syslog-filter.conf
 echo "   }" >> /etc/logstash/conf.d/10-syslog-filter.conf
 echo "   syslog_pri { }" >> /etc/logstash/conf.d/10-syslog-filter.conf
 echo "    date {" >> /etc/logstash/conf.d/10-syslog-filter.conf
