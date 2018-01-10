@@ -24,7 +24,7 @@ htpasswd -c /etc/nginx/htpasswd.users amar && service nginx restart
 echo 'deb http://packages.elastic.co/logstash/2.2/debian stable main' | sudo tee /etc/apt/sources.list.d/logstash-2.2.x.list && apt-get update && apt-get install -y logstash 
 mkdir -p /etc/pki/tls/certs && mkdir /etc/pki/tls/private
 
-echo " subjectAltName = IP: localhost " >> 
+echo " subjectAltName = IP: localhost " >> /etc/ssl/openssl.cnf
 cd /etc/pki/tls && openssl req -config /etc/ssl/openssl.cnf -x509 -days 3650 -batch -nodes -newkey rsa:2048 -keyout private/logstash-forwarder.key -out certs/logstash-forwarder.crt
 
 ## input logstash
